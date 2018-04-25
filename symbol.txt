@@ -1,0 +1,44 @@
+1:定义. 基本上，Symbol是一种类似字符串的数据类型，表示独一无二的值。Symbol值不是对象，所以不能添加属性。
+ 
+ 1.1:声明. let s = Symbol();接受一个字符串作为参数，表示对Symbol       实例的描述。相同参数的Symbol函数返回值是不相等的。
+
+ 1.2:Symbol转为字符串:String(s);s.toString();
+     Symbol转为布尔值:Boolean(s)
+2.作为对象属性名的Symbol   
+     写法一:let symbol =Symbol();
+	    let a = {}; 
+	    a
+[symbol] = 'hello';
+     写法二:let a={
+		[symbol]:'hello'	
+            }; 
+     写法三:let a={};
+	    a.defineProperty(a,symbol,{value:'hello'});
+     console.log(a[symbol])//'hello'
+     注意：Symbol作为属性值时，不能用点运算符。
+           Symbol作为属性值时，该属性是公开属性，不是私有属性。
+3.消除魔术字符串
+  魔术字符串：在代码中出现多次、与代码形成强耦合的某一个具体的字  符串或者数值。风格良好的代码，应该尽量消除魔术字符串，改由含义清晰的变量代码。
+  方法：把魔术字符串写成一个变量。把变量值写为Symbol()。
+4.属性名的遍历
+  Symbol类型的属性，不会出现在for...in、for...of、Objtect.keys()、Object.getOwnPropertyNames()、JSON.stringify()，有一个Object.getOwnPropertySymbols()，可以获取指定对象的所有Symbol属性名。Reflect.ownKeys()返回对象的所有类型的键名，包括常规键名和Symbol类型。
+5.Symbol.for(),Symbol.keyFor() 
+  Symbol.for()接受一个字符串作为参数，搜索有没有以该参数作为名称的Symbol值，如果有返回，如有没有，新建一个以该字符串为名称的Symbol值。Symbol()没有登记机制，Symbol.keyFor()返回一个已登记的Symbol值的key.注意Symbol.for为Symbol值等级的名字，是全局环境的，iframe窗口生成的Symbol值，可以在主页面得到。
+6.模块的singleton模式
+  singleton模式（单体模式 ）是只能被实例化一次并且可以通过一个众所周知的访问点来访问的类。如果把实例对象放到global对象上，为了不让实例对象不被修改，应用module.exports = golbal[Symbol('xxx')];
+7.内置的Symbol值   
+  7.1 Symbol.hasInstance()判断是否为该对象的实例。比如，foo instanceof Foo 实际调用的是Foo[Symbol.hasInstance](foo)
+  7.2 Symbol.isConcatSpreadable 布尔值，表示该对象用于Array.prototype.concat()时，是否可以展开。数组默认undefined或true，有展开的效果。对象默认不展开。
+  7.3 Symbol.species属性，指向一个构造函数，创建衍生对象时，会使用这个属性返回的函数，作为构造函数。定义Symbol.species属性要采用get取值器。
+  7.4 Symbol.match属性，指向一个函数，当执行str.match(myObject)时，返回该方法返回值。str.prototype.match(regexp) 相当于 regexp[Symbol.match](this);
+  7.5 Symbol.replace属性，当该对象被String.prototype.replace方法
+调用时，返回该方法的返回值。String.prototype.replace(searchVal,replaceVal)相当于searchVal[Symbol.replace](this,replaceVal)。
+  7.6 Symbol.search属性，当该对象被String.prototype.search方法调用时，会返回该方法的返回值。String.prototype.search(regexp)相当于
+regexp[Symbol.search](this);
+  7.7 Symbol.split属性，当该对象被String.prototype.split调用时，会，返回该方法的返回值。
+  7.8 Symbol.iterator，指向该对象的默认遍历器方法。
+  7.9 Symbol.toPrimitive属性，该对象被转为原始类型的值时，会调用这个方法，返回该对象对应的原始类型值。
+  7.10 Symbol.toStringTag属性，调用Object.prototype.toString时，返回值出现在toString方法返回的字符串之中，表示对象的类型。这个属性用来定义[object object]中object后面的那个字符串.
+  7.11 Symbol.unscopables 指向一个对象，该对象指定了使用with关键字时，哪些属性会被with环境排除。
+	
+  
