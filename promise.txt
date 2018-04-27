@@ -1,0 +1,28 @@
+1.Promise的含义
+  Promise是一个对象,代表一个异步操作,从它可以获取异步操作的消息。
+  两个特点：三种状态:pending(进行中)、fulfilled(已成功)、rejected（已失败）;Promise对象的状态只能从pending变到fulfilled或从pending变到rejected。
+2.基本用法
+  实例化：new Promise(function(resolve,reject){})
+  参数：resolve 状态从'未完成'变成'成功'(pending到resolved)；reject从'未完成'变为'失败'(即从pending到rejected)。
+  promise.then(function(value){},function(err){})
+  △：const p1 = new Promise(function(resolve,reject){});
+      const p2 = new Promise(functino(resolve,reject){resolve                 (p1)});
+      这时，p1的状态决定p2的状态，如果p1的状态是pending,那么p2的回调函数就会等待p1的状态改变，如果p1的状态已经是resolved或rejected,那么p2的回调函数就会立刻执行。
+  △:调用resolve和reject并不会终结Promise的参数函数的执行。
+     因为立即resolved的Promise是在本轮事件循环的末尾执行。总是晚育本轮循环的同步任务。
+3.Promise.prototype.then()作用是为Promise实例添加状态改变时的回调函数。有两个参数，resolved和rejected.
+  △:then方法返回一个新的promise实例，不是原来的promise，因此可以用链式写法。第一个then返回的对象会作为参数返回第二个then.第二个then会等第一个then的Promise对象的状态发生变化。
+4.Promise.prototype.catch()用于指定发生错误时的回调函数。
+  Promise对象的错误具有"冒泡"性质，会一直向后传递，直到被捕获为止也就是说，错误总会被下一个catch捕获。
+  Promise会吃掉错误：Promise对象抛出的错误不会传递到外层代码，即不会有任何反应。
+5.Promise.prototype.finally()用于指定不管Promise对象最后状态如何，都会执行的操作。ES2018引入标准的。finally方法的回调函数是不接受任何参数的，finally里面的操作，应该是与状态无关的，不依赖与Promise的执行结果。
+6.Promise.all()用于多个Promise实例，包装成一个新的Promise实例。
+ 参数[p1,p2,p3]都是Promise实例
+ p1,p2,p3都fulfilled，返回值组成一个数组，传递给P的回调。
+ 只要有一个被rejected，p的状态就会rejected
+7.Promise.race([p1,p2,p3])同样是把多个promise实例包装成一个新的Promise实例。只要p1,p2,p3之中有一个实例率先改变状态，p的状态就跟着改变。
+8.Promise.resolve()把现有对象转为Promise对象。立即resolve的Promise对象是在本轮‘事件循环’的结束时.
+    setTimeout()的第二个参数设为0，就表示当前代码执行完（执行栈清空）以后，立即执行(0毫秒间隔)指定的回调函数。
+9.Promise.reject()返回一个新的Promise实例，该状态为rejected.
+10.应用 加载图片 Generator函数与Promise的结合
+11.Promise.try()模拟try代码块，Promise.catch模拟的是catch代码块。
